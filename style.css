@@ -1,0 +1,39 @@
+body,html{
+    height: 100%;
+}
+.container{
+    position: relative;
+    height: inherit;
+    border: 2px solid black;
+}
+
+.rightBtn,.downBtn{
+    z-index: 10;
+    position: absolute;
+}
+.rightBtn{
+    left: 98%;
+    top: 0;
+    height: 100%;
+
+}
+.downBtn{
+    top: 98%;
+    left: 0;
+    width: 100%;
+}
+h1{
+    display: inline;
+}
+.btn{
+    color: aliceblue;
+    background-color: black;
+    border: none;
+    font-size: 15px;
+}
+
+.linkedNoteNameInput{
+    display: none;
+    position: absolute;
+    
+}
