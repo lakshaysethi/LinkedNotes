@@ -130,6 +130,7 @@ function displayRootsForCurrentLinkedNote(){
     for(i=0;i<currentLinkedNote.rootsArray.length;i++){
         html+="<div class='root'>"+currentLinkedNote.rootsArray[i].name+"</div>";
     }
+    
 }
 /******************************************end **/
 
