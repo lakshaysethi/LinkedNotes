@@ -118,7 +118,7 @@ var currentLinkedNote=linkedNoteMain;
 /****************************************** end **/
 
 
-/****************************************** start*/
+/****************************************** start ADD new root*/
 $(".addRootBtn").click(function(){
     var name= prompt("please Enter New Root Name");
     currentLinkedNote.rootsArray.push(new Root(0,0,name));
@@ -132,7 +132,7 @@ function displayRootsForCurrentLinkedNote(){
     }
     
 }
-/******************************************end **/
+/******************************************end ADD new root **/
 
 /****************************************** start*/
 
