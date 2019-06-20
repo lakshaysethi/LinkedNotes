@@ -11,13 +11,22 @@ Storage.prototype.getObject = function(key) {
 /****************************************** local storage*/
 function getName(){var name = prompt("Please Enter Name of LinkedNote");if(name)return name;else return "Untitled LinkedNote";}
 var linkedNoteMain;
+var dataBackup;
+if(localStorage.getObject("dataBackup")){
+    dataBackup=localStorage.getObject("dataBackup");
+}else {
+    dataBackup=new DataBackup();
+}
+
 if(localStorage.getObject("linkedNote")){
     linkedNoteMain=localStorage.getObject("linkedNote");
-}else linkedNoteMain=new LinkedNote(getName());
-
+}else {
+    linkedNoteMain=new LinkedNote(getName());
+}
 window.onbeforeunload = function(event) {
     localStorage.setObject('linkedNote', linkedNoteMain); 
-    
+    dataBackup.linkedNotesArray.push(linkedNoteMain);
+    localStorage.setObject('dataBackup', dataBackup); 
 };
 //set things from local storage 
 window.onload = function(){
@@ -31,6 +40,11 @@ window.onload = function(){
 
 
 /******************************************definations */
+function DataBackup(){
+    this.linkedNotesArray=[];
+    
+}
+
 function LinkedNote(name){
 
     this.rootsArray= [];
@@ -45,6 +59,7 @@ function Root(x,y,name){
     this.x=x;
     this.y=y;
     this.notes='';
+    this.LinkedNote= new LinkedNote(name);
 }
 function Child(name){
     this.name=name;
@@ -105,6 +120,7 @@ $(".linkedNoteNameInput").on("keypress",function(e){
 /****************************************** start */
 
 $(".delMainNote").click(function(){
+    dataBackup.linkedNotesArray.push(linkedNoteMain);
     linkedNoteMain=new LinkedNote(getName());
     $(".container.main").width(linkedNoteMain.docWidth);
     $(".container.main").height(linkedNoteMain.docHeight);
