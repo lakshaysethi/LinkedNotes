@@ -9,30 +9,36 @@ Storage.prototype.getObject = function(key) {
 /***************************************** copied code end */
 
 /****************************************** local storage*/
-function getName(){var name = prompt("Please Enter Name of LinkedNote");if(name)return name;else return "Untitled LinkedNote";}
+function getName(cat){var name = prompt("Please Enter Name of LinkedNote");if(name)return name;else if(cat=="main") return "Untitled MainNote"; else return "Untitled LinkedNote";}
 var linkedNoteMain;
 var dataBackup;
+
+
+if(localStorage.getObject("linkedNoteMain")){
+    linkedNoteMain=localStorage.getObject("linkedNoteMain");
+    
+}else {
+    linkedNoteMain=new LinkedNoteMain(getName("main"));
+}
+
+//set things from local storage 
+window.onload = function(){
+    $(".container.main").width(linkedNoteMain.docWidth);
+    $(".container.main").height(linkedNoteMain.docHeight);
+    $(".NoteName").html(linkedNoteMain.name);
+};
+
 if(localStorage.getObject("dataBackup")){
     dataBackup=localStorage.getObject("dataBackup");
 }else {
     dataBackup=new DataBackup();
 }
 
-if(localStorage.getObject("linkedNote")){
-    linkedNoteMain=localStorage.getObject("linkedNote");
-}else {
-    linkedNoteMain=new LinkedNote(getName());
-}
 window.onbeforeunload = function(event) {
-    localStorage.setObject('linkedNote', linkedNoteMain); 
+    localStorage.setObject("linkedNoteMain", linkedNoteMain); 
+    
     dataBackup.linkedNotesArray.push(linkedNoteMain);
     localStorage.setObject('dataBackup', dataBackup); 
-};
-//set things from local storage 
-window.onload = function(){
-    $(".container.main").width(linkedNoteMain.docWidth);
-    $(".container.main").height(linkedNoteMain.docHeight);
-    $(".NoteName").html(linkedNoteMain.name);
 };
 /******************************************local storage end */
 
@@ -44,9 +50,18 @@ function DataBackup(){
     this.linkedNotesArray=[];
     
 }
+function LinkedNoteMain(name){
+    this.cat= "main";
+    
+    this.rootsArray= [];
+    this.docHeight= 500;
+    this.docWidth=500;
+    this.name= name;
+}
 
 function LinkedNote(name){
-
+    this.cat="notMain";
+    
     this.rootsArray= [];
     this.docHeight= 500;
     this.docWidth=500;
@@ -112,6 +127,7 @@ $(".linkedNoteNameInput").on("keypress",function(e){
         currentLinkedNote.name=$(".linkedNoteNameInput").val();
         $(".linkedNoteNameInput").hide();
         $(".NoteName").html(currentLinkedNote.name);
+        
     }
 });
 /******************************************LinkedNote Name functions end **/
@@ -135,31 +151,76 @@ var currentLinkedNote=linkedNoteMain;
 
 
 /****************************************** start ADD new root*/
+displayRootsForCurrentLinkedNote();
 $(".addRootBtn").click(function(){
     var name= prompt("please Enter New Root Name");
     currentLinkedNote.rootsArray.push(new Root(0,0,name));
     displayRootsForCurrentLinkedNote();
 });
+$(".rootInput").on("keypress",function(e){
+    if(e.which==13){
+        var name= $(".rootInput").val();
+        currentLinkedNote.rootsArray.push(new Root(0,0,name));
+        displayRootsForCurrentLinkedNote();
+        $(".rootInput").val("");
+    }
+});
+
 
 function displayRootsForCurrentLinkedNote(){
     var html="";
     for(i=0;i<currentLinkedNote.rootsArray.length;i++){
-        html+="<div class='root'>"+currentLinkedNote.rootsArray[i].name+"</div>";
+        html+="<div class='root'><span>"+i+"</span>"+currentLinkedNote.rootsArray[i].name+"<button class='delRootBtn'>del</button><button class='editRootBtn'>edit</button><button class='goDeepBtn'>GoDeeper</button><input placeholder='Add child' type='text' class='childInput'></div>";
     }
+    $(".rootsHolder").html(html);
     
 }
 /******************************************end ADD new root **/
 
 /****************************************** start*/
+$(".rootsHolder").on("click",".goDeepBtn",function(){
+    var i = $(this).parent().find("span").html();
+    var currentroot=currentLinkedNote.rootsArray[i];
+    currentroot.LinkedNote.name=currentroot.name
+    currentLinkedNote= currentroot.LinkedNote;
+    showCurrentLinkedNOte();
+});
+$(".rootsHolder").on("keypress",".childInput",function(e){
+    if(e.which==13){
+        var i = $(this).parent().find("span").html();
+        var rootElement=$(this).parent();
+        var currentroot=currentLinkedNote.rootsArray[i];
+        currentroot.childArray.push(new Child($(this).val()));
+        showChildrenOfRoot(rootElement);
+    //showCurrentLinkedNOte();
+    }
+    
+});
 
 /******************************************end **/
 
-/****************************************** start*/
 
+/****************************************** start*/
+function showChildrenOfRoot(rootElement){
+    var html= rootElement.html();
+}
+/******************************************end **/
+
+
+/****************************************** start*/
+function showCurrentLinkedNOte(){
+    $(".container.main").width(currentLinkedNote.docWidth);
+    $(".container.main").height(currentLinkedNote.docHeight);
+    $(".NoteName").html(currentLinkedNote.name)
+    displayRootsForCurrentLinkedNote();
+}
 /******************************************end **/
 
 /****************************************** start*/
-
+$(".goHome").click(function(){
+    currentLinkedNote= linkedNoteMain;
+    showCurrentLinkedNOte();
+});
 /******************************************end **/
 
 /****************************************** start*/
