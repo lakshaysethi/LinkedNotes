@@ -169,8 +169,22 @@ $(".rootInput").on("keypress",function(e){
 
 function displayRootsForCurrentLinkedNote(){
     var html="";
+    var childrenHtml="";
     for(i=0;i<currentLinkedNote.rootsArray.length;i++){
-        html+="<div class='root'><span>"+i+"</span>"+currentLinkedNote.rootsArray[i].name+"<button class='delRootBtn'>del</button><button class='editRootBtn'>edit</button><button class='goDeepBtn'>GoDeeper</button><input placeholder='Add child' type='text' class='childInput'></div>";
+        
+        for(j=0;j<currentLinkedNote.rootsArray[i].childArray.length;j++){
+            childrenHtml="";
+            childrenHtml+="<div class='child'>"+currentLinkedNote.rootsArray[i].childArray[j].name+"</div>";
+        }
+        html+="<div class='root'><span>"
+            +i+"</span>"
+            +currentLinkedNote.rootsArray[i].name
+            +"<button class='openBtn'>+</button>"
+            +"<div class='options'>"
+            +"<button class='closeBtn'>-</button><button class='delRootBtn'>del</button><button class='editRootBtn'>edit</button><button class='goDeepBtn'>GoDeeper</button><input placeholder='Add child' type='text' class='childInput'>"
+            +"</div>"
+            +"<div class='children'>"+childrenHtml+"</div></div>";
+        
     }
     $(".rootsHolder").html(html);
     
@@ -178,20 +192,30 @@ function displayRootsForCurrentLinkedNote(){
 /******************************************end ADD new root **/
 
 /****************************************** start*/
+$(".rootInput").focus();
+$(".rootsHolder").on("click",".openBtn",function(){
+   $(this).parent().find(".options").show();
+   $(this).hide(); 
+});
+$(".rootsHolder").on("click",".closeBtn",function(){
+    $(this).parent().parent().find(".openBtn").show();
+    $(this).parent().parent().find(".options").hide();
+});
 $(".rootsHolder").on("click",".goDeepBtn",function(){
-    var i = $(this).parent().find("span").html();
+    var i = $(this).parent().parent().find("span").html();
     var currentroot=currentLinkedNote.rootsArray[i];
     currentroot.LinkedNote.name=currentroot.name
     currentLinkedNote= currentroot.LinkedNote;
     showCurrentLinkedNOte();
+    $(".rootInput").focus();
 });
 $(".rootsHolder").on("keypress",".childInput",function(e){
     if(e.which==13){
-        var i = $(this).parent().find("span").html();
-        var rootElement=$(this).parent();
+        var i = $(this).parent().parent().find("span").html();
+        
         var currentroot=currentLinkedNote.rootsArray[i];
         currentroot.childArray.push(new Child($(this).val()));
-        showChildrenOfRoot(rootElement);
+        displayRootsForCurrentLinkedNote();
     //showCurrentLinkedNOte();
     }
     
@@ -201,9 +225,7 @@ $(".rootsHolder").on("keypress",".childInput",function(e){
 
 
 /****************************************** start*/
-function showChildrenOfRoot(rootElement){
-    var html= rootElement.html();
-}
+
 /******************************************end **/
 
 

@@ -40,3 +40,23 @@ h1{
 .childInput{
     width: 50px;
 }
+.root{
+    min-width: 50px;
+    min-height: 50px;
+    display: inline;
+    float: left;
+    /* clear: left; */
+    border: solid black 1px;
+    margin-bottom: 5px;
+    background-color: rgb(152, 243, 144);
+    font-size: 20px;
+}
+.root span{
+    display: none;
+}
+.child{
+    background-color: aqua;
+}
+.options{
+    display: none;
+}
