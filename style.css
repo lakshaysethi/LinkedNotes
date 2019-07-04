@@ -43,9 +43,9 @@ h1{
 .root{
     min-width: 50px;
     min-height: 50px;
-    display: inline;
-    float: left;
-    /* clear: left; */
+    
+    
+    display: block;
     border: solid black 1px;
     margin-bottom: 5px;
     background-color: rgb(152, 243, 144);

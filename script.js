@@ -97,10 +97,10 @@ $(".downBtn").click(function(){
 function addSpace(position){
     if(position=="right"){
         $(".container.main").width($(".container.main").width()+500);
-        linkedNoteMain.docWidth= $(".container.main").width();
+        currentLinkedNote.docWidth= $(".container.main").width();
     }else if(position =="down"){
         $(".container.main").height($(".container.main").height()+500);
-        linkedNoteMain.docHeight=$(".container.main").height();
+        currentLinkedNote.docHeight=$(".container.main").height();
     }
     
 }
@@ -150,7 +150,7 @@ var currentLinkedNote=linkedNoteMain;
 /****************************************** end **/
 
 
-/****************************************** start ADD new root*/
+/****************************************** start ADD new root and update roots*/
 displayRootsForCurrentLinkedNote();
 $(".addRootBtn").click(function(){
     var name= prompt("please Enter New Root Name");
@@ -176,7 +176,7 @@ function displayRootsForCurrentLinkedNote(){
             childrenHtml="";
             childrenHtml+="<div class='child'>"+currentLinkedNote.rootsArray[i].childArray[j].name+"</div>";
         }
-        html+="<div class='root'><span>"
+        html+="<div style='position: relative; left:"+ currentLinkedNote.rootsArray[i].x+"; top: "+currentLinkedNote.rootsArray[i].y+";' class='root'><span>"
             +i+"</span>"
             +currentLinkedNote.rootsArray[i].name
             +"<button class='openBtn'>+</button>"
@@ -192,6 +192,10 @@ function displayRootsForCurrentLinkedNote(){
 /******************************************end ADD new root **/
 
 /****************************************** start*/
+var lastLinkedNote;
+/******************************************end **/
+
+/****************************************** start  option buttons*/
 $(".rootInput").focus();
 $(".rootsHolder").on("click",".openBtn",function(){
    $(this).parent().find(".options").show();
@@ -203,11 +207,27 @@ $(".rootsHolder").on("click",".closeBtn",function(){
 });
 $(".rootsHolder").on("click",".goDeepBtn",function(){
     var i = $(this).parent().parent().find("span").html();
+    
     var currentroot=currentLinkedNote.rootsArray[i];
     currentroot.LinkedNote.name=currentroot.name
+    lastLinkedNote = currentLinkedNote;
     currentLinkedNote= currentroot.LinkedNote;
     showCurrentLinkedNOte();
     $(".rootInput").focus();
+});
+
+$(".rootsHolder").on("click",".delRootBtn",function(){
+    var i = $(this).parent().parent().find("span").html();
+    if (confirm("Are you sure you want to delete this root?")){
+        currentLinkedNote.rootsArray.splice(i,1);
+        displayRootsForCurrentLinkedNote();
+    }
+   
+});
+$(".rootsHolder").on("click",".editRootBtn",function(){
+    var i = $(this).parent().parent().find("span").html();
+    
+    
 });
 $(".rootsHolder").on("keypress",".childInput",function(e){
     if(e.which==13){
@@ -224,16 +244,13 @@ $(".rootsHolder").on("keypress",".childInput",function(e){
 /******************************************end **/
 
 
-/****************************************** start*/
-
-/******************************************end **/
 
 
 /****************************************** start*/
 function showCurrentLinkedNOte(){
     $(".container.main").width(currentLinkedNote.docWidth);
     $(".container.main").height(currentLinkedNote.docHeight);
-    $(".NoteName").html(currentLinkedNote.name)
+    $(".NoteName").html(lastLinkedNote.name+">"+currentLinkedNote.name)
     displayRootsForCurrentLinkedNote();
 }
 /******************************************end **/
@@ -241,11 +258,30 @@ function showCurrentLinkedNOte(){
 /****************************************** start*/
 $(".goHome").click(function(){
     currentLinkedNote= linkedNoteMain;
+    
+    
     showCurrentLinkedNOte();
 });
 /******************************************end **/
 
-/****************************************** start*/
+/****************************************** start draggable*/
+$(document).ready(function(){
+    setInterval(setdraggable,200);
+    function setdraggable(){
+        $(".rootsHolder").css("height",(currentLinkedNote.docHeight-50)+"px")
+        $(".root").draggable({containment:'parent',stop:function(){
+            var i = $(this).find("span").html();
+            currentLinkedNote.rootsArray[i].x= $(this).css("left");
+            currentLinkedNote.rootsArray[i].y= $(this).css("top");
+            
+
+        }});
+        $(".root").css("position","absolute");
+    }
+    
+});
+
+
 
 /******************************************end **/
 
