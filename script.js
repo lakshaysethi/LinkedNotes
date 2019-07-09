@@ -277,6 +277,7 @@ $(document).ready(function(){
             
 
         }});
+        $(".root").resizable();
         $(".root").css("position","absolute");
     }
     
