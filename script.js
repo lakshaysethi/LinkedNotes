@@ -179,9 +179,10 @@ function displayRootsForCurrentLinkedNote(){
         html+="<div style='position: relative; left:"+ currentLinkedNote.rootsArray[i].x+"; top: "+currentLinkedNote.rootsArray[i].y+";' class='root'><span>"
             +i+"</span>"
             +currentLinkedNote.rootsArray[i].name
+            +"<button class='goDeepBtn'>GoDeeper</button>"
             +"<button class='openBtn'>+</button>"
             +"<div class='options'>"
-            +"<button class='closeBtn'>-</button><button class='delRootBtn'>del</button><button class='editRootBtn'>edit</button><button class='goDeepBtn'>GoDeeper</button><input placeholder='Add child' type='text' class='childInput'>"
+            +"<button class='closeBtn'>-</button><button class='delRootBtn'>del</button><button class='editRootBtn'>edit</button><input placeholder='Add child' type='text' class='childInput'>"
             +"</div>"
             +"<div class='children'>"+childrenHtml+"</div></div>";
         
@@ -206,7 +207,7 @@ $(".rootsHolder").on("click",".closeBtn",function(){
     $(this).parent().parent().find(".options").hide();
 });
 $(".rootsHolder").on("click",".goDeepBtn",function(){
-    var i = $(this).parent().parent().find("span").html();
+    var i = $(this).parent().find("span").html();
     
     var currentroot=currentLinkedNote.rootsArray[i];
     currentroot.LinkedNote.name=currentroot.name
@@ -299,6 +300,7 @@ $(".paste").click(function(){
     var coppied = new Root(0,0,"link To:"+links.coppied.name);
     coppied.LinkedNote= links.coppied;
     currentLinkedNote.rootsArray.push(coppied);
+    displayRootsForCurrentLinkedNote();
 });
 /******************************************end **/
 
