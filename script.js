@@ -285,8 +285,21 @@ $(document).ready(function(){
 
 /******************************************end **/
 
-/****************************************** start*/
+/****************************************** start copy paste link*/
+function Links(){
+    this.current=null;
+    this.copied=null;
+}
+var links = new Links();
 
+$(".copy").click(function(){
+    links.coppied=currentLinkedNote;
+});
+$(".paste").click(function(){
+    var coppied = new Root(0,0,"link To:"+links.coppied.name);
+    coppied.LinkedNote= links.coppied;
+    currentLinkedNote.rootsArray.push(coppied);
+});
 /******************************************end **/
 
 /****************************************** start*/
