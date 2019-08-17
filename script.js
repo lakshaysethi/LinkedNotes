@@ -169,11 +169,11 @@ $(".rootInput").on("keypress",function(e){
 
 function displayRootsForCurrentLinkedNote(){
     var html="";
-    var childrenHtml="";
+    
     for(i=0;i<currentLinkedNote.rootsArray.length;i++){
-        
+        var childrenHtml="";
         for(j=0;j<currentLinkedNote.rootsArray[i].childArray.length;j++){
-            childrenHtml="";
+            
             childrenHtml+="<div class='child'>"+currentLinkedNote.rootsArray[i].childArray[j].name+"</div>";
         }
         html+="<div style='position: relative; left:"+ currentLinkedNote.rootsArray[i].x+"; top: "+currentLinkedNote.rootsArray[i].y+";' class='root'><span>"
