@@ -197,9 +197,10 @@ var lastLinkedNote;
 
 /****************************************** start  option buttons*/
 $(".rootInput").focus();
-$(".rootsHolder").on("click",".openBtn",function(){
+$(".rootsHolder").on("mouseup",".openBtn",function(){
    $(this).parent().find(".options").show();
    $(this).hide(); 
+   
 });
 $(".rootsHolder").on("click",".closeBtn",function(){
     $(this).parent().parent().find(".openBtn").show();
