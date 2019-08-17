@@ -285,7 +285,35 @@ $(document).ready(function(){
 
 /******************************************end **/
 
-/****************************************** start*/
+/**functionality for click anywhere on screen to add roots**************************************** start*/
+var newinput=$(".rootsInput");
+
+$(".rootsHolder").click(function(e){
+    
+    if(newinput){
+        newinput.remove();
+    }
+    newinput =$("<input type='text'>");
+    newinput.appendTo($(".rootsHolder"));
+    
+    newinput.css({"position":"absolute","top":e.clientY+"px","left":e.clientX+"px"});
+    newinput.focus();
+    newinput.on("keypress",function(e){
+        if(e.which==13){
+            
+            var name= newinput.val();
+            var x=newinput.css("left");//.slice(0,newinput.css("left").search("p"))+"px";
+            var y = parseInt(newinput.css("top").slice(0,newinput.css("top").search("p")))+20+"px";
+            currentLinkedNote.rootsArray.push(new Root(x,y,name));
+            displayRootsForCurrentLinkedNote();
+            newinput.val("");
+        }
+    });
+    
+});
+
+
+
 
 /******************************************end **/
 
