@@ -69,19 +69,14 @@ function LinkedNote(name){
 }
 
 function Root(x,y,name){
-    this.childArray= [];
+    
     this.name= name;
     this.x=x;
     this.y=y;
     this.notes='';
     this.LinkedNote= new LinkedNote(name);
 }
-function Child(name){
-    this.name=name;
-    this.childArray=[];
-    this.notes='';
-    this.LinkedNote= new LinkedNote(name);
-}
+
 /******************************************definations end  */
 
 
@@ -172,9 +167,9 @@ function displayRootsForCurrentLinkedNote(){
     
     for(i=0;i<currentLinkedNote.rootsArray.length;i++){
         var childrenHtml="";
-        for(j=0;j<currentLinkedNote.rootsArray[i].childArray.length;j++){
+        for(j=0;j<topFew(currentLinkedNote.rootsArray[i].LinkedNote.rootsArray.length);j++){
             
-            childrenHtml+="<div class='child'>"+currentLinkedNote.rootsArray[i].childArray[j].name+"</div>";
+            childrenHtml+="<div class='child'>"+currentLinkedNote.rootsArray[i].LinkedNote.rootsArray[j].name+"</div>";
         }
         html+="<div style='position: relative; left:"+ currentLinkedNote.rootsArray[i].x+"; top: "+currentLinkedNote.rootsArray[i].y+";' class='root'><span>"
             +i+"</span>"
@@ -233,20 +228,31 @@ $(".rootsHolder").on("click",".editRootBtn",function(){
 $(".rootsHolder").on("keypress",".childInput",function(e){
     if(e.which==13){
         var i = $(this).parent().parent().find("span").html();
-        
+        var thisElement= $(this).parent().parent().find(".children");
         var currentroot=currentLinkedNote.rootsArray[i];
-        currentroot.childArray.push(new Child($(this).val()));
-        displayRootsForCurrentLinkedNote();
+        currentroot.LinkedNote.rootsArray.push(new Root(0,0,$(this).val()));
+        refreshChildRoots(thisElement,currentroot.LinkedNote.rootsArray);
+        $(this).val("");
     //showCurrentLinkedNOte();
     }
     
 });
 
 /******************************************end **/
-
-
-
-
+/****************************************** start*/
+function refreshChildRoots(element,array){
+    var html="";
+    for (i=0;i<topFew(array.length);i++){
+        html += "<div class='child'>"+array[i].name+"</div>"
+    }
+    element.html(html);
+}
+/******************************************end **/
+function topFew(int){
+    var finalInt=0;
+    if (int>4) finalInt= 4; else finalInt =int;
+    return finalInt;
+}
 /****************************************** start*/
 function showCurrentLinkedNOte(){
     $(".container.main").width(currentLinkedNote.docWidth);
@@ -289,7 +295,7 @@ $(document).ready(function(){
 /**functionality for click anywhere on screen to add roots**************************************** start*/
 var newinput=$(".rootsInput");
 
-$(".rootsHolder").click(function(e){
+$(".rootsHolder").on("dblclick",function(e){
     
     if(newinput){
         newinput.remove();
@@ -312,7 +318,12 @@ $(".rootsHolder").click(function(e){
     });
     
 });
-
+$(".rootsHolder").click(function(e){
+    
+    if(newinput){
+        newinput.remove();
+    }
+});
 
 
 
