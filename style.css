@@ -43,7 +43,7 @@ h1{
 .root{
     min-width: 50px;
     min-height: 50px;
-    
+    max-width: 350px;    
     
     display: block;
     border: solid black 1px;
