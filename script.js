@@ -196,7 +196,7 @@ $(".rootInput").focus();
 $(".rootsHolder").on("mouseup",".openBtn",function(){
    $(this).parent().find(".options").show();
    $(this).hide(); 
-   
+   $(this).parent().parent().find(".childInput").focus();
 });
 $(".rootsHolder").on("click",".closeBtn",function(){
     $(this).parent().parent().find(".openBtn").show();
