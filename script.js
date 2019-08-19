@@ -187,7 +187,7 @@ function displayRootsForCurrentLinkedNote(){
 /******************************************end ADD new root **/
 
 /****************************************** start*/
-var lastLinkedNote;
+var lastLinkedNote=[];
 /******************************************end **/
 
 /****************************************** start  option buttons*/
@@ -206,7 +206,7 @@ $(".rootsHolder").on("click",".goDeepBtn",function(){
     
     var currentroot=currentLinkedNote.rootsArray[i];
     currentroot.LinkedNote.name=currentroot.name
-    lastLinkedNote = currentLinkedNote;
+    lastLinkedNote.push(currentLinkedNote);
     currentLinkedNote= currentroot.LinkedNote;
     showCurrentLinkedNOte();
     $(".rootInput").focus();
@@ -238,6 +238,15 @@ $(".rootsHolder").on("keypress",".childInput",function(e){
     
 });
 
+/******************************************end **/
+/****************************************** start*/
+$(".backBtn").click(function(){
+    if(lastLinkedNote.length>0){
+        currentLinkedNote= lastLinkedNote[lastLinkedNote.length-1];
+        lastLinkedNote.pop();
+        displayRootsForCurrentLinkedNote();
+    }
+});
 /******************************************end **/
 /****************************************** start*/
 function refreshChildRoots(element,array){
