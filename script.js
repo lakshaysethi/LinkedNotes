@@ -189,8 +189,30 @@ function displayRootsForCurrentLinkedNote(){
 /******************************************end ADD new root **/
 /****************************************** child buttons functionality start*/
 $(".rootsHolder").on("click",".childOpnBtn",function(){
-    var i = $(this).parent().find("span").html();
+    var thisChild =  $(this).parent();
+    //var i = thisChild.find("span").html();
+    //var j = $(this).closest(".root").find("span").first().html();
+    $(this).hide();//hiding the open button
+    //currentLinkedNote.rootsArray[j].LinkedNote.rootsArray[i]
+    thisChild.find(".options").show();
+    thisChild.find(".ChildschildInput").focus();
 });
+$(".rootsHolder").on("click",".childCloseBtn",function(){
+    var thisChild =  $(this).parent().parent();
+    thisChild.find(".options").hide();
+    thisChild.find(".childOpnBtn").show();
+});
+$(".rootsHolder").on("click",".delChildRootBtn",function(){
+    if(confirm("are you sure you want to delete this child?")){
+       var thisChild =   $(this).parent().parent();
+       var i =thisChild.closest(".root").find("span").first().html();//root index
+       var m = thisChild.find("span").first().html();// child index
+       currentLinkedNote.rootsArray[i].LinkedNote.rootsArray.splice(m,1);
+       displayRootsForCurrentLinkedNote();
+    }
+
+});
+
 /******************************************child buttons functionality end **/
 /****************************************** start*/
 var lastLinkedNote=[];
@@ -199,7 +221,7 @@ var lastLinkedNote=[];
 /****************************************** start  option buttons*/
 $(".rootInput").focus();
 $(".rootsHolder").on("mouseup",".openBtn",function(){
-   $(this).parent().find(".options").show();
+   $(this).parent().find(".options").first().show();
    $(this).hide(); 
    $(this).parent().parent().find(".childInput").focus();
 });
