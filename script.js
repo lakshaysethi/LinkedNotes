@@ -170,7 +170,8 @@ function displayRootsForCurrentLinkedNote(){
         var childrenHtml="";
         for(j=0;j</*topFew*/(currentLinkedNote.rootsArray[i].LinkedNote.rootsArray.length);j++){
             
-            childrenHtml+="<div class='child'>"+currentLinkedNote.rootsArray[i].LinkedNote.rootsArray[j].name+"</div>";
+            childrenHtml+="<div class='child'><span>"+i+"</span>"+currentLinkedNote.rootsArray[i].LinkedNote.rootsArray[j].name+"<button class='childOpnBtn'>+</button>"+"<div class='options'><button class='childCloseBtn'>-</button><button class='delChildRootBtn'>del</button><button class='editChildRootBtn'>edit</button><button class='childGoDeepBtn'>GoDeeper</button><input placeholder='Add child' type='text' class='ChildschildInput'></div></div>";
+            
         }
         html+="<div style='position: relative; left:"+ currentLinkedNote.rootsArray[i].x+"; top: "+currentLinkedNote.rootsArray[i].y+";' class='root'><span>"
             +i+"</span>"
@@ -186,7 +187,11 @@ function displayRootsForCurrentLinkedNote(){
     
 }
 /******************************************end ADD new root **/
-
+/****************************************** child buttons functionality start*/
+$(".rootsHolder").on("click",".childOpnBtn",function(){
+    var i = $(this).parent().find("span").html();
+});
+/******************************************child buttons functionality end **/
 /****************************************** start*/
 var lastLinkedNote=[];
 /******************************************end **/
